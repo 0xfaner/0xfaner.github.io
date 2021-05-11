@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comic+Sans+MS:300,300italic,400,400italic,700,700italic%7CArial:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;0xfaner.top&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:-1,&quot;unescape&quot;:true,&quot;preload&quot;:false}}</script>
+<meta name="description" content="本文记录了配置静态博客框架 Hexo 的相关流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 配置指南">
+<meta property="og:url" content="https://0xfaner.top/posts/hexo-config/index.html">
+<meta property="og:site_name" content="0xfaner&#39;s Blog">
+<meta property="og:description" content="本文记录了配置静态博客框架 Hexo 的相关流程">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-22T16:00:00.000Z">
+<meta property="article:author" content="0xfaner">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://0xfaner.top/posts/hexo-config/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;0xfaner.top&#x2F;posts&#x2F;hexo-config&#x2F;&quot;,&quot;path&quot;:&quot;posts&#x2F;hexo-config&#x2F;&quot;,&quot;title&quot;:&quot;Hexo 配置指南&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Hexo 配置指南 | 0xfaner's Blog</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">0xfaner's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Just something trivial</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-text">服务器配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git"><span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-text">Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="nav-text">配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E9%85%8D%E7%BD%AE"><span class="nav-text">本地配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%8A%80%E5%B7%A7"><span class="nav-text">其他技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AFhttps"><span class="nav-text">开启HTTPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http%E5%BC%BA%E5%88%B6%E8%B7%B3%E8%BD%AChttps"><span class="nav-text">HTTP强制跳转HTTPS</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="0xfaner"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">0xfaner</p>
+  <div class="site-description" itemprop="description">Change life, start fresh.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/0xfaner" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;0xfaner" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:0xfaner@gmail.com" title="E-Mail → mailto:0xfaner@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/0xfaner" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;0xfaner" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://codeforces.com/profile/0xfaner" title="Codeforces → http:&#x2F;&#x2F;codeforces.com&#x2F;profile&#x2F;0xfaner" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Codeforces</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zaiyewujiang.cn/" title="https:&#x2F;&#x2F;zaiyewujiang.cn" rel="noopener" target="_blank">TinyHuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://zhiyi.live/" title="http:&#x2F;&#x2F;zhiyi.live" rel="noopener" target="_blank">MoonChasing</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kimiye.xyz/" title="https:&#x2F;&#x2F;www.kimiye.xyz" rel="noopener" target="_blank">Kimiye</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cfzhao.com/" title="http:&#x2F;&#x2F;www.cfzhao.com" rel="noopener" target="_blank">Cfzhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://4eay7lab.com/" title="https:&#x2F;&#x2F;4eay7lab.com" rel="noopener" target="_blank">eregerm</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://xgsteins.fun/" title="https:&#x2F;&#x2F;xgsteins.fun" rel="noopener" target="_blank">Xgsteins</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yuki.systems/" title="http:&#x2F;&#x2F;yuki.systems" rel="noopener" target="_blank">Brethland</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://pikanglong.com/" title="https:&#x2F;&#x2F;pikanglong.com" rel="noopener" target="_blank">ConePi</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.x3zvawq.xyz/" title="https:&#x2F;&#x2F;blog.x3zvawq.xyz" rel="noopener" target="_blank">X3ZvaWQ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yiayaz.top/" title="https:&#x2F;&#x2F;yiayaz.top" rel="noopener" target="_blank">Yiayaz</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://chenks12138.github.io/" title="https:&#x2F;&#x2F;chenks12138.github.io" rel="noopener" target="_blank">ChenKS</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yizero10.github.io/" title="https:&#x2F;&#x2F;yizero10.github.io" rel="noopener" target="_blank">ZeroHuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sinon.top/" title="https:&#x2F;&#x2F;sinon.top" rel="noopener" target="_blank">Sinon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://duinomaker.top/" title="https:&#x2F;&#x2F;duinomaker.top" rel="noopener" target="_blank">duinomaker</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yuhi.xyz/" title="https:&#x2F;&#x2F;yuhi.xyz" rel="noopener" target="_blank">yuhi</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.xjdesyxx.top/" title="https:&#x2F;&#x2F;www.xjdesyxx.top" rel="noopener" target="_blank">xjzsq</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.matrix72.top/" title="https:&#x2F;&#x2F;www.matrix72.top" rel="noopener" target="_blank">matrix72</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://0xfaner.top/posts/hexo-config/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="0xfaner">
+      <meta itemprop="description" content="Change life, start fresh.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0xfaner's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo 配置指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-25T00:00:00+08:00">2020-02-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-01-23 00:00:00" itemprop="dateModified" datetime="2021-01-23T00:00:00+08:00">2021-01-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>
+<strong>本文记录了配置静态博客框架 Hexo 的相关流程</strong>
+</center>
+<span id="more"></span>
+<h1 id="写在前面">写在前面</h1>
+<blockquote>
+<p>0xfaner 白嫖了一台阿里云的云服务器！</p>
+</blockquote>
+<p>这就是故事的开端：受疫情的影响，阿里云推出了「学生“在家实践”计划（现活动已结束）」。0xfaner 免费领到了一台 2 核 4G 的云服务器 <code>ECS</code>。</p>
+<p>0xfaner 虽然抢到了服务器，但是麻烦也接踵而至。</p>
+<blockquote>
+<p>首先，0xfaner 收到了阿里云的通知，要求博客添加备案信息，否则要罚款，但是他发现自己没有进行公安备案，于是嫌麻烦的他索性连 ICP 备案一起注销了，反正博客托管在Github Page上。</p>
+<p>第二天 0xfaner 收到了七牛云的通知，加速域名没有备案，所以图床失效了。0xfaner 访问了自己的博客，发现图床果然炸了，博客背景都没法显示了，凄凄惨惨。于是 0xfaner 把图片托管在了 Github Page 上。但是 Github Page 实在太慢了，过了两天 0xfaner 实在受不了啦，想到了 <code>ECS</code> 还没用，所以打算把博客部署在 <code>ECS</code> 上……</p>
+</blockquote>
+<p>五天后，终于配完了 Hexo 的踩坑带师 0xfaner 决定记录一下这次的配置经历。</p>
+<h1 id="简介">简介</h1>
+<p>Hexo 是基于 Node.js 的一款静态博客框架，可以方便地生成静态网页托管在 GitHub 或服务器上。搭建博客的性价比之选，依赖少易于安装。</p>
+<p>首先介绍下 Hexo 的机制：本地环境生成静态文件，将这些文件托管在平台上，这样用户只能访问到你生成的静态文件。所以评论这样的功能 Hexo 必须依靠第三方插件实现。但是好处是降低平台负担，仅需要托管即可。</p>
+<p>本次部署环境：</p>
+<ul>
+<li><p>远程服务器：CentOS 7.7</p></li>
+<li><p>本地：Windows 10</p></li>
+</ul>
+<p>注意本文中的本地环境已经配置好了部署到 Github Page 所需的全部要求。</p>
+<h1 id="服务器配置">服务器配置</h1>
+<p>服务器端需要两个环境：</p>
+<ul>
+<li><p>Git，用于接收静态文件并部署到指定文件夹。</p></li>
+<li><p>Nginx，用于托管静态文件。</p></li>
+</ul>
+<h2 id="git">Git</h2>
+<h3 id="安装">安装</h3>
+<p>首先检查 Git 是否安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<p>如果显示：<code>-bash: git: command not found</code> 则说明没有安装，那么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y git</span><br></pre></td></tr></table></figure>
+<h3 id="配置">配置</h3>
+<p>为了安全，我们新建一个名为 git 的用户，专门用于接受静态文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useradd git // 添加用户名为git</span><br><span class="line">passwd git // 设置用户git的密码</span><br><span class="line">su git //用户切换到git</span><br></pre></td></tr></table></figure>
+<p>Git 仓库目录在 <code>/home/git/repos/blog.git</code> ，静态文件部署在 <code>/home/git/projects/blog</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/git/</span><br><span class="line">mkdir -p projects/blog // 项目存在的真实目录</span><br><span class="line">mkdir repos &amp;&amp; <span class="built_in">cd</span> repos</span><br><span class="line">git init --bare blog.git // 创建一个裸露的仓库</span><br></pre></td></tr></table></figure>
+<p>我们需要配置 Git，利用 <code>post-receive</code> 实现自动化部署：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> blog.git/hooks</span><br><span class="line">vi post-receive // 创建 hook 钩子函数</span><br></pre></td></tr></table></figure>
+<p>输入内容如下（不了解 Vim 文本编辑器操作的用户需要自行了解一下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">git --work-tree=/home/git/projects/blog --git-dir=/home/git/repos/blog.git checkout -f</span><br></pre></td></tr></table></figure>
+<p>然后配置权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod +x post-receive // 配置可执行权限</span><br><span class="line"><span class="built_in">exit</span> // 退出到 root 登录</span><br><span class="line">chown -R git:git /home/git/repos/blog.git // 添加权限</span><br></pre></td></tr></table></figure>
+<p>然后我们测试一下仓库是否成功配置，在本地：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@0xfaner.top:/home/git/repos/blog.git</span><br></pre></td></tr></table></figure>
+<p>如果能够把空仓库拉下来就说明配置完成。</p>
+<p>然后我们建立 SSH 信任关系：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub git@0xfaner.top // 将本机的公钥复制到服务器中</span><br><span class="line">ssh git@0xfaner.top // 测试能否登录</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意使用 <code>Git Bash</code> 进行操作，否则第一条命令 <code>ssh-copy-id</code> 无法运行。注意此操作需要本地已经生成过公钥私钥，使用 <code>ssh-keygen</code> 生成。</p>
+</blockquote>
+<p>如果不需要密码而成功登陆了，那么说明配置完成，运行命令 <code>logout</code> 即可退出登录。</p>
+<p>安全起见，禁用 git 用户的 shell 登录权限，使其只能用 <code>git clone</code> 与 <code>git push</code> 等命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/shells // 查看 git-shell 是否在登录方式里面</span><br><span class="line"><span class="built_in">which</span> git-shell // 查看是否安装</span><br><span class="line">vi /etc/shells // 添加上2步显示出来的路径，通常在 /usr/bin/git-shell</span><br></pre></td></tr></table></figure>
+<p>然后修改 <code>/etc/passwd</code> 的权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>进行如下修改：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- git:x:1000:1000::/home/git:/bin/bash</span></span><br><span class="line"><span class="addition">+ git:x:1000:1000:,,,:/home/git:/usr/bin/git-shell</span></span><br></pre></td></tr></table></figure>
+<h2 id="nginx">Nginx</h2>
+<h3 id="安装-1">安装</h3>
+<p>首先检查 Nginx 是否安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -v</span><br></pre></td></tr></table></figure>
+<p>如果显示：<code>-bash: nginx: command not found</code> 则说明没有安装，那么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
+<p>安装完成后，运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br></pre></td></tr></table></figure>
+<p>然后访问自己服务器的IP或域名来看看效果吧。</p>
+<h3 id="配置-1">配置</h3>
+<p>修改 Nginx 的配置文件 nginx.conf，一般目录为 <code>/etc/nginx/nginx.conf</code> 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>如果目录位置不对，那么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+<p>然后根据显示的目录找一下吧（x</p>
+<p>将其中的 <code>user</code> 从默认的 <code>nginx</code> 改为 <code>git</code> 或 <code>root</code> 以确保访问权限，防止出现 <code>403 Forbidden</code> 错误。</p>
+<p>同时将根目录修改为静态文件所在的目录：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- user nginx;</span></span><br><span class="line"><span class="addition">+ user git;</span></span><br><span class="line"># ...</span><br><span class="line">http &#123;</span><br><span class="line">    # ...</span><br><span class="line">    server &#123;</span><br><span class="line">        # ...</span><br><span class="line"><span class="deletion">-        root    /usr/share/nginx/html/;</span></span><br><span class="line"><span class="addition">+        root    /home/git/projects/blog;</span></span><br><span class="line">        # ...</span><br><span class="line">    &#125;</span><br><span class="line">    # ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改完成后，运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>以重启 Nginx。</p>
+<h1 id="本地配置">本地配置</h1>
+<p>默认大家都是已经实现了 hexo 部署到 Github Page 了，那么只需要修改站点配置文件<code>_config.yml</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@0xfaner.top:/home/git/repos/blog.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>然后本地运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+<p>就完成了部署啦~</p>
+<h1 id="其他技巧">其他技巧</h1>
+<h2 id="开启https">开启HTTPS</h2>
+<p>首先需要配置一份证书，可以使用 <a target="_blank" rel="noopener" href="https://letsencrypt.org">Let's Encrypt</a> 的免费证书或在阿里云等服务商处代为申请。</p>
+<p>因为是纯静态博客，所以也不需要用 Certbot 进行一键 HTTPS 配置，直接在 Nginx 里面加载证书就行。</p>
+<p>首先将证书传输到服务器中，包括 <code>.pem</code> 和 <code>.key</code> 两个文件。</p>
+<p>然后将 <code>nginx.conf</code> 文件中的 HTTPS 部分取消注释，修改根目录，并配置证书路径。</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">user git;</span><br><span class="line"># ...</span><br><span class="line">http &#123;</span><br><span class="line">    # ...</span><br><span class="line">    server &#123;</span><br><span class="line">        # ...</span><br><span class="line">        root    /home/git/projects/blog;</span><br><span class="line">        # ...</span><br><span class="line">    &#125;</span><br><span class="line">    # ...</span><br><span class="line">    server &#123;</span><br><span class="line">        # ...</span><br><span class="line"><span class="deletion">-        root    /usr/share/nginx/html/;</span></span><br><span class="line"><span class="addition">+        root    /home/git/projects/blog;</span></span><br><span class="line"><span class="deletion">-        ssl_certficate &quot;old_path&quot;;</span></span><br><span class="line"><span class="addition">+        ssl_certficate &quot;new_path&quot;;</span></span><br><span class="line"><span class="deletion">-        ssl_certficate_key &quot;old_path&quot;;</span></span><br><span class="line"><span class="addition">+        ssl_certficate_key &quot;new_path&quot;;</span></span><br><span class="line">        # ...</span><br><span class="line">    &#125;</span><br><span class="line">    # ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>即可完成配置。</p>
+<h2 id="http强制跳转https">HTTP强制跳转HTTPS</h2>
+<p>如果希望访问都以 HTTPS 方式，那么需要配置 HTTP 强制跳转 HTTPS。修改 <code>nginx.conf</code> 文件即可。</p>
+<p>从下面两段代码中任选一段：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> ($scheme = http) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://$host$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> ($server_port = <span class="number">80</span>) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://$host$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>插入到：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">user</span> git;</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="attribute">root</span>    /home/git/projects/blog;</span><br><span class="line">        <span class="comment"># 这里这里这里</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="attribute">root</span>    /home/git/projects/blog;</span><br><span class="line">        <span class="attribute">ssl_certficate</span> <span class="string">&quot;new_path&quot;</span>;</span><br><span class="line">        <span class="attribute">ssl_certficate_key</span> <span class="string">&quot;new_path&quot;</span>;</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>即可完成配置。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>0xfaner
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://0xfaner.top/posts/hexo-config/" title="Hexo 配置指南">https://0xfaner.top/posts/hexo-config/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/problem-josephus/" rel="prev" title="约瑟夫问题探究">
+                  <i class="fa fa-chevron-left"></i> 约瑟夫问题探究
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/ac-template/" rel="next" title="算法竞赛相关模板">
+                  算法竞赛相关模板 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">苏ICP备19019658号-2 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">0xfaner</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">24k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">22 mins.</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;all&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
