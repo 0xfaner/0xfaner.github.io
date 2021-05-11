@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>算法竞赛相关模板</title>
+    <url>/posts/ac-template/</url>
+    <content><![CDATA[<center>
+<strong>本文包括算法竞赛中常用的一些算法模板</strong>
+</center>
+<span id="more"></span>
+<h1 id="快速读入">快速读入</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _tp&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">(_tp&amp; x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="built_in">getchar</span>(), sgn = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (ch ^ <span class="string">&#x27;-&#x27;</span> &amp;&amp; !<span class="built_in">isdigit</span>(ch)) ch = <span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">if</span> (ch == <span class="string">&#x27;-&#x27;</span>) ch = <span class="built_in">getchar</span>(), sgn = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (x = <span class="number">0</span>; <span class="built_in">isdigit</span>(ch); ch = <span class="built_in">getchar</span>()) x = x * <span class="number">10</span> + ch - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (sgn) x = -x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用了<strong>template</strong>，这样即可读入任意的整数类型（**包括__int128**）。</p>
+<h1 id="快速输出">快速输出</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _tp&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(_tp x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">9</span>) <span class="built_in">print</span>(x / <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">putchar</span>(x % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用了<strong>template</strong>，这样即可输出任意的整数类型（**包括__int128**）。</p>
+<h1 id="离散化">离散化</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">disperse</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b[n + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) b[i] = a[i];</span><br><span class="line">    <span class="built_in">sort</span>(b + <span class="number">1</span>, b + n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> m = <span class="built_in">unique</span>(b + <span class="number">1</span>, b + n + <span class="number">1</span>) - b - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) a[i] = <span class="built_in">lower_bound</span>(b + <span class="number">1</span>, b + m + <span class="number">1</span>, a[i]) - b;</span><br><span class="line">    <span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>离散化后 <span class="math inline">\(a\)</span> 数组即变为离散化后的数组，该函数的返回值即为离散化后数组元素的种类。</p>
+<h1 id="st表">ST表</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[N], st[N][M];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) st[i][<span class="number">0</span>] = a[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; (<span class="number">1</span> &lt;&lt; j) &lt;= n; j++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + (<span class="number">1</span> &lt;&lt; j) &lt;= n; i++)</span><br><span class="line">            st[i][j] = <span class="built_in">min</span>(st[i][j - <span class="number">1</span>], st[i + (<span class="number">1</span> &lt;&lt; (j - <span class="number">1</span>))][j - <span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> k = (<span class="keyword">int</span>)(<span class="built_in">log</span>((<span class="keyword">double</span>)(r - l + <span class="number">1</span>)) / <span class="built_in">log</span>(<span class="number">2.0</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(st[l][k], st[r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>][k]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Algorithm Contest</category>
+      </categories>
+      <tags>
+        <tag>Template</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo 配置指南</title>
     <url>/posts/hexo-config/</url>
     <content><![CDATA[<center>
@@ -118,32 +144,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>算法竞赛相关模板</title>
-    <url>/posts/ac-template/</url>
-    <content><![CDATA[<center>
-<strong>本文包括算法竞赛中常用的一些算法模板</strong>
-</center>
-<span id="more"></span>
-<h1 id="快速读入">快速读入</h1>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _tp&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">(_tp&amp; x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="built_in">getchar</span>(), sgn = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (ch ^ <span class="string">&#x27;-&#x27;</span> &amp;&amp; !<span class="built_in">isdigit</span>(ch)) ch = <span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">if</span> (ch == <span class="string">&#x27;-&#x27;</span>) ch = <span class="built_in">getchar</span>(), sgn = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (x = <span class="number">0</span>; <span class="built_in">isdigit</span>(ch); ch = <span class="built_in">getchar</span>()) x = x * <span class="number">10</span> + ch - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (sgn) x = -x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用了<strong>template</strong>，这样即可读入任意的整数类型（**包括__int128**）。</p>
-<h1 id="快速输出">快速输出</h1>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _tp&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(_tp x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">9</span>) <span class="built_in">print</span>(x / <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">putchar</span>(x % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用了<strong>template</strong>，这样即可输出任意的整数类型（**包括__int128**）。</p>
-<h1 id="离散化">离散化</h1>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">disperse</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b[n + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) b[i] = a[i];</span><br><span class="line">    <span class="built_in">sort</span>(b + <span class="number">1</span>, b + n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> m = <span class="built_in">unique</span>(b + <span class="number">1</span>, b + n + <span class="number">1</span>) - b - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) a[i] = <span class="built_in">lower_bound</span>(b + <span class="number">1</span>, b + m + <span class="number">1</span>, a[i]) - b;</span><br><span class="line">    <span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>离散化后 <span class="math inline">\(a\)</span> 数组即变为离散化后的数组，该函数的返回值即为离散化后数组元素的种类。</p>
-<h1 id="st表">ST表</h1>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[N], st[N][M];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) st[i][<span class="number">0</span>] = a[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; (<span class="number">1</span> &lt;&lt; j) &lt;= n; j++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + (<span class="number">1</span> &lt;&lt; j) &lt;= n; i++)</span><br><span class="line">            st[i][j] = <span class="built_in">min</span>(st[i][j - <span class="number">1</span>], st[i + (<span class="number">1</span> &lt;&lt; (j - <span class="number">1</span>))][j - <span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> k = (<span class="keyword">int</span>)(<span class="built_in">log</span>((<span class="keyword">double</span>)(r - l + <span class="number">1</span>)) / <span class="built_in">log</span>(<span class="number">2.0</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(st[l][k], st[r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>][k]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Algorithm Contest</category>
-      </categories>
-      <tags>
-        <tag>Template</tag>
       </tags>
   </entry>
   <entry>
