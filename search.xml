@@ -27,6 +27,99 @@
       </tags>
   </entry>
   <entry>
+    <title>约瑟夫问题探究</title>
+    <url>/posts/problem-josephus/</url>
+    <content><![CDATA[<center>
+<strong>本文探究了约瑟夫问题的相关知识。</strong>
+</center>
+<span id="more"></span>
+<h1 id="问题介绍">问题介绍</h1>
+<p>约瑟夫问题是指这样一类问题：<span class="math inline">\(n\)</span> 个人围成一圈，编号为 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span>。从 <span class="math inline">\(1\)</span> 号最先从 <span class="math inline">\(1\)</span> 开始报数，每次报到 <span class="math inline">\(m\)</span> 的人出圈，下一个人重新从 <span class="math inline">\(1\)</span> 开始报数，直到剩下最后一人为止。</p>
+<h1 id="解法介绍">解法介绍</h1>
+<p>其中影响到一个人在出圈顺序中的位置 <span class="math inline">\(id\)</span> 的有三个关键参量：他的编号 <span class="math inline">\(i\)</span> 、人数 <span class="math inline">\(n\)</span> 以及出圈间歇 <span class="math inline">\(m\)</span>。</p>
+<p>在某些特殊情况下，部分参量并不起作用。如 <span class="math inline">\(m|i\)</span> 时， <span class="math inline">\(i\)</span> 对 <span class="math inline">\(id\)</span> 无影响； <span class="math inline">\(m = 1\)</span> 时， <span class="math inline">\(n\)</span> 对 <span class="math inline">\(id\)</span> 无影响。在部分题目中这可能成为解题的关键。</p>
+<p>该类问题有两种问法，分别是：</p>
+<ul>
+<li><p>询问约瑟夫排列（即出圈顺序）</p></li>
+<li><p>询问第 <span class="math inline">\(k\)</span> 出圈（第 <span class="math inline">\(n\)</span> 出圈者即为获胜者）</p></li>
+</ul>
+<h2 id="询问约瑟夫排列">询问约瑟夫排列</h2>
+<h3 id="一般情况">一般情况</h3>
+<p>时间复杂度 <span class="math inline">\(\mathcal{O}(n \log n)\)</span>。</p>
+<p>这样考虑问题：假定当前出圈的人编号为当前第 <span class="math inline">\(k\)</span> 小，此人出圈后圈内还有 <span class="math inline">\(n\)</span> 人，那么下一个出圈的人为圈内编号第 <span class="math inline">\((k-1+m-1)\bmod n + 1\)</span> 小。</p>
+<p>那么只需要一个数据结构，满足能够单点修改，并查询区间第 <span class="math inline">\(k\)</span> 小的：权值树状数组。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ValueBIT</span> &#123;</span></span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; c;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x &amp; (-x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">        c.<span class="built_in">resize</span>(n + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            c[i] = <span class="built_in">lowbit</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= n; i += <span class="built_in">lowbit</span>(i)) &#123;</span><br><span class="line">            c[i] += x;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find_kth</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> add = <span class="number">0</span>, sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">20</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            add += <span class="number">1</span> &lt;&lt; i;</span><br><span class="line">            <span class="keyword">if</span> (add &gt; n || c[add] + sum &gt;= k) &#123;</span><br><span class="line">                add -= <span class="number">1</span> &lt;&lt; i;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sum += c[add];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> add + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; vbit;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, m;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    vbit.<span class="built_in">init</span>(n);</span><br><span class="line">    <span class="keyword">int</span> now = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (n) &#123;</span><br><span class="line">        now = (now - <span class="number">1</span> + m - <span class="number">1</span>) % n + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> k = vbit.<span class="built_in">find_kth</span>(now);</span><br><span class="line">        vbit.<span class="built_in">add</span>(k, <span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, k);</span><br><span class="line">        n--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然也可以使用顺序统计树</p>
+<h2 id="询问第-k-出圈">询问第 <span class="math inline">\(k\)</span> 出圈</h2>
+<h3 id="时间复杂度-mathcalok">时间复杂度 <span class="math inline">\(\mathcal{O}(k)\)</span></h3>
+<p>令 <span class="math inline">\(f(n,m,k)\)</span> 表示第 <span class="math inline">\(k\)</span> 出圈人。</p>
+<p>有公式：</p>
+<p><span class="math display">\[
+f(n,m,k)=
+\begin{cases}
+(m - 1) \bmod n + 1 &amp; , k = 1 \\
+(f(n - 1, m, k - 1) -1 + m) \bmod n + 1 &amp; , k &gt; 0
+\end{cases}
+\]</span></p>
+<p>代码实现如下</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((k == <span class="number">1</span> ? <span class="number">0</span> : <span class="built_in">f</span>(n - <span class="number">1</span>, m, k - <span class="number">1</span>)) - <span class="number">1</span> + m) % n + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然也有非递归的写法</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s = (m - <span class="number">1</span>) % (n - k + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - k + <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        s = (s + m) % i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="时间复杂度-mathcalolog_fracmm---1n">时间复杂度 <span class="math inline">\(\mathcal{O}(\log_{\frac{m}{m - 1}}n)\)</span></h3>
+<p>当 <span class="math inline">\(n&gt;&gt;m\)</span> 时，每次从 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span> 的一个循环中，有 <span class="math inline">\(\lfloor \frac{n}{m} \rfloor \times m\)</span> 人报数，其中 <span class="math inline">\(\lfloor \frac{n}{m} \rfloor\)</span> 人出圈。</p>
+<p>参考前面时间复杂度 <span class="math inline">\(\mathcal{O}(k)\)</span> 的式子，可以发现在此过程中有许多取模操作是无作用的。</p>
+<p>于是我们可以合并一些操作，使得部分加法合并为乘法。</p>
+<p>有公式</p>
+<p><span class="math display">\[
+f(n, m, k) = (f(n - c, m, k - c) - 1 + m \times c) \bmod n + 1
+\]</span></p>
+<p>式中 <span class="math inline">\(c\)</span> 表示从当前的 <span class="math inline">\(n\)</span> 一直变化到到 <span class="math inline">\(c\)</span> 的期间内取模都无作用的最大的 <span class="math inline">\(c\)</span>。</p>
+<p>代码如下</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> i = n - k + <span class="number">1</span>, s = (m - <span class="number">1</span>) % i;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">        <span class="keyword">int</span> c = <span class="built_in">min</span>(n - i, (i - s + m - <span class="number">2</span>) / (m - <span class="number">1</span>));</span><br><span class="line">        s = (s + m * c) % (i += c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="时间复杂度-mathcalofracmkn">时间复杂度 <span class="math inline">\(\mathcal{O}(\frac{mk}{n})\)</span></h3>
+<p>易知第 <span class="math inline">\(k\)</span> 出圈人为第 <span class="math inline">\(k \times m\)</span> 报数人，以此为基础进行推导。</p>
+<p>首先明确几个概念：</p>
+<ul>
+<li><p>位置编号：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(n\)</span>，表示在圈内的初始编号为 <span class="math inline">\(k\)</span>。</p></li>
+<li><p>报数编号：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(n \times m\)</span>，表示第 <span class="math inline">\(k\)</span> 次报数。</p></li>
+<li><p>报数：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(m\)</span>，表示某人所报的某个数。</p></li>
+</ul>
+<p>首先取一个报数编号 <span class="math inline">\(p\)</span>，对应位置编号 <span class="math inline">\(id\)</span>。可以用该式来表示：<span class="math inline">\(p = a \times m + b\)</span> (<span class="math inline">\(0 \leq a &lt; n\)</span>, <span class="math inline">\(1 \leq b \leq m\)</span>)。实际含义是：在第 <span class="math inline">\(a\)</span> 轮报数结束后，报数为 <span class="math inline">\(b\)</span>。</p>
+<p>那么容易推出以下信息：</p>
+<ul>
+<li><p>此时圈内所剩人员数量为 <span class="math inline">\(n - a\)</span></p></li>
+<li><p>若此人报数 <span class="math inline">\(b = m\)</span>，则此人出局。否则圈内剩余的人将会恰好各报一次数，然后此人会再一次报数。</p></li>
+</ul>
+<p>假设此人未出局，那么 <span class="math inline">\(b &lt; m\)</span>。</p>
+<p>设此人下一次报数编号为 <span class="math inline">\(q\)</span>，易知 <span class="math inline">\(q = p + n - a = a \times (m - 1) + b + n\)</span>。</p>
+<p>那么可以推导：<span class="math inline">\(a = \dfrac{q - n - b}{m-1} = \lfloor \dfrac{q - n - 1}{m - 1} \rfloor\)</span>。</p>
+<p>所以有：<span class="math inline">\(p = q - n + a = q - n - \lfloor \dfrac{q - n - 1}{m - 1} \rfloor = \lfloor \dfrac{(q - n - 1) \times m}{m - 1} \rfloor + 1\)</span></p>
+<p>这样就完成了后继公式到前驱公式的变化，如此不断迭代，直到得到他是第 <span class="math inline">\(k\)</span> 报数人为止。</p>
+<p>有公式：</p>
+<p><span class="math display">\[
+f(n, m, k) = g(n, m, k \times m)
+\]</span></p>
+<p><span class="math display">\[
+g(n, m, x) =
+\begin{cases}
+x &amp; , x \leq n \\
+g(n, m, \lfloor \dfrac{(x - 1 - n) \times m}{m - 1} \rfloor + 1) &amp;, x &gt; n
+\end{cases}
+\]</span></p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &lt;= n ? x : <span class="built_in">g</span>(n, m, (x - <span class="number">1</span> - n) * m / (m - <span class="number">1</span>) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">g</span>(n, m, k * m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意到该函数可以非递归实现，给出优化后的代码：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s = k * m - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (s &gt;= n) &#123;</span><br><span class="line">        s = (s - n) * m / (m - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Algorithm Contest</category>
+      </categories>
+      <tags>
+        <tag>Josephus problem</tag>
+        <tag>research</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo 配置指南</title>
     <url>/posts/hexo-config/</url>
     <content><![CDATA[<center>
@@ -144,99 +237,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>约瑟夫问题探究</title>
-    <url>/posts/problem-josephus/</url>
-    <content><![CDATA[<center>
-<strong>本文探究了约瑟夫问题的相关知识。</strong>
-</center>
-<span id="more"></span>
-<h1 id="问题介绍">问题介绍</h1>
-<p>约瑟夫问题是指这样一类问题：<span class="math inline">\(n\)</span> 个人围成一圈，编号为 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span>。从 <span class="math inline">\(1\)</span> 号最先从 <span class="math inline">\(1\)</span> 开始报数，每次报到 <span class="math inline">\(m\)</span> 的人出圈，下一个人重新从 <span class="math inline">\(1\)</span> 开始报数，直到剩下最后一人为止。</p>
-<h1 id="解法介绍">解法介绍</h1>
-<p>其中影响到一个人在出圈顺序中的位置 <span class="math inline">\(id\)</span> 的有三个关键参量：他的编号 <span class="math inline">\(i\)</span> 、人数 <span class="math inline">\(n\)</span> 以及出圈间歇 <span class="math inline">\(m\)</span>。</p>
-<p>在某些特殊情况下，部分参量并不起作用。如 <span class="math inline">\(m|i\)</span> 时， <span class="math inline">\(i\)</span> 对 <span class="math inline">\(id\)</span> 无影响； <span class="math inline">\(m = 1\)</span> 时， <span class="math inline">\(n\)</span> 对 <span class="math inline">\(id\)</span> 无影响。在部分题目中这可能成为解题的关键。</p>
-<p>该类问题有两种问法，分别是：</p>
-<ul>
-<li><p>询问约瑟夫排列（即出圈顺序）</p></li>
-<li><p>询问第 <span class="math inline">\(k\)</span> 出圈（第 <span class="math inline">\(n\)</span> 出圈者即为获胜者）</p></li>
-</ul>
-<h2 id="询问约瑟夫排列">询问约瑟夫排列</h2>
-<h3 id="一般情况">一般情况</h3>
-<p>时间复杂度 <span class="math inline">\(\mathcal{O}(n \log n)\)</span>。</p>
-<p>这样考虑问题：假定当前出圈的人编号为当前第 <span class="math inline">\(k\)</span> 小，此人出圈后圈内还有 <span class="math inline">\(n\)</span> 人，那么下一个出圈的人为圈内编号第 <span class="math inline">\((k-1+m-1)\bmod n + 1\)</span> 小。</p>
-<p>那么只需要一个数据结构，满足能够单点修改，并查询区间第 <span class="math inline">\(k\)</span> 小的：权值树状数组。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ValueBIT</span> &#123;</span></span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; c;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x &amp; (-x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">        c.<span class="built_in">resize</span>(n + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            c[i] = <span class="built_in">lowbit</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= n; i += <span class="built_in">lowbit</span>(i)) &#123;</span><br><span class="line">            c[i] += x;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find_kth</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> add = <span class="number">0</span>, sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">20</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            add += <span class="number">1</span> &lt;&lt; i;</span><br><span class="line">            <span class="keyword">if</span> (add &gt; n || c[add] + sum &gt;= k) &#123;</span><br><span class="line">                add -= <span class="number">1</span> &lt;&lt; i;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sum += c[add];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> add + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; vbit;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, m;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    vbit.<span class="built_in">init</span>(n);</span><br><span class="line">    <span class="keyword">int</span> now = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (n) &#123;</span><br><span class="line">        now = (now - <span class="number">1</span> + m - <span class="number">1</span>) % n + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> k = vbit.<span class="built_in">find_kth</span>(now);</span><br><span class="line">        vbit.<span class="built_in">add</span>(k, <span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, k);</span><br><span class="line">        n--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然也可以使用顺序统计树</p>
-<h2 id="询问第-k-出圈">询问第 <span class="math inline">\(k\)</span> 出圈</h2>
-<h3 id="时间复杂度-mathcalok">时间复杂度 <span class="math inline">\(\mathcal{O}(k)\)</span></h3>
-<p>令 <span class="math inline">\(f(n,m,k)\)</span> 表示第 <span class="math inline">\(k\)</span> 出圈人。</p>
-<p>有公式：</p>
-<p><span class="math display">\[
-f(n,m,k)=
-\begin{cases}
-(m - 1) \bmod n + 1 &amp; , k = 1 \\
-(f(n - 1, m, k - 1) -1 + m) \bmod n + 1 &amp; , k &gt; 0
-\end{cases}
-\]</span></p>
-<p>代码实现如下</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((k == <span class="number">1</span> ? <span class="number">0</span> : <span class="built_in">f</span>(n - <span class="number">1</span>, m, k - <span class="number">1</span>)) - <span class="number">1</span> + m) % n + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然也有非递归的写法</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s = (m - <span class="number">1</span>) % (n - k + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - k + <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        s = (s + m) % i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="时间复杂度-mathcalolog_fracmm---1n">时间复杂度 <span class="math inline">\(\mathcal{O}(\log_{\frac{m}{m - 1}}n)\)</span></h3>
-<p>当 <span class="math inline">\(n&gt;&gt;m\)</span> 时，每次从 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span> 的一个循环中，有 <span class="math inline">\(\lfloor \frac{n}{m} \rfloor \times m\)</span> 人报数，其中 <span class="math inline">\(\lfloor \frac{n}{m} \rfloor\)</span> 人出圈。</p>
-<p>参考前面时间复杂度 <span class="math inline">\(\mathcal{O}(k)\)</span> 的式子，可以发现在此过程中有许多取模操作是无作用的。</p>
-<p>于是我们可以合并一些操作，使得部分加法合并为乘法。</p>
-<p>有公式</p>
-<p><span class="math display">\[
-f(n, m, k) = (f(n - c, m, k - c) - 1 + m \times c) \bmod n + 1
-\]</span></p>
-<p>式中 <span class="math inline">\(c\)</span> 表示从当前的 <span class="math inline">\(n\)</span> 一直变化到到 <span class="math inline">\(c\)</span> 的期间内取模都无作用的最大的 <span class="math inline">\(c\)</span>。</p>
-<p>代码如下</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> i = n - k + <span class="number">1</span>, s = (m - <span class="number">1</span>) % i;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">        <span class="keyword">int</span> c = <span class="built_in">min</span>(n - i, (i - s + m - <span class="number">2</span>) / (m - <span class="number">1</span>));</span><br><span class="line">        s = (s + m * c) % (i += c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="时间复杂度-mathcalofracmkn">时间复杂度 <span class="math inline">\(\mathcal{O}(\frac{mk}{n})\)</span></h3>
-<p>易知第 <span class="math inline">\(k\)</span> 出圈人为第 <span class="math inline">\(k \times m\)</span> 报数人，以此为基础进行推导。</p>
-<p>首先明确几个概念：</p>
-<ul>
-<li><p>位置编号：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(n\)</span>，表示在圈内的初始编号为 <span class="math inline">\(k\)</span>。</p></li>
-<li><p>报数编号：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(n \times m\)</span>，表示第 <span class="math inline">\(k\)</span> 次报数。</p></li>
-<li><p>报数：从 <span class="math inline">\(1\)</span> 开始编号到 <span class="math inline">\(m\)</span>，表示某人所报的某个数。</p></li>
-</ul>
-<p>首先取一个报数编号 <span class="math inline">\(p\)</span>，对应位置编号 <span class="math inline">\(id\)</span>。可以用该式来表示：<span class="math inline">\(p = a \times m + b\)</span> (<span class="math inline">\(0 \leq a &lt; n\)</span>, <span class="math inline">\(1 \leq b \leq m\)</span>)。实际含义是：在第 <span class="math inline">\(a\)</span> 轮报数结束后，报数为 <span class="math inline">\(b\)</span>。</p>
-<p>那么容易推出以下信息：</p>
-<ul>
-<li><p>此时圈内所剩人员数量为 <span class="math inline">\(n - a\)</span></p></li>
-<li><p>若此人报数 <span class="math inline">\(b = m\)</span>，则此人出局。否则圈内剩余的人将会恰好各报一次数，然后此人会再一次报数。</p></li>
-</ul>
-<p>假设此人未出局，那么 <span class="math inline">\(b &lt; m\)</span>。</p>
-<p>设此人下一次报数编号为 <span class="math inline">\(q\)</span>，易知 <span class="math inline">\(q = p + n - a = a \times (m - 1) + b + n\)</span>。</p>
-<p>那么可以推导：<span class="math inline">\(a = \dfrac{q - n - b}{m-1} = \lfloor \dfrac{q - n - 1}{m - 1} \rfloor\)</span>。</p>
-<p>所以有：<span class="math inline">\(p = q - n + a = q - n - \lfloor \dfrac{q - n - 1}{m - 1} \rfloor = \lfloor \dfrac{(q - n - 1) \times m}{m - 1} \rfloor + 1\)</span></p>
-<p>这样就完成了后继公式到前驱公式的变化，如此不断迭代，直到得到他是第 <span class="math inline">\(k\)</span> 报数人为止。</p>
-<p>有公式：</p>
-<p><span class="math display">\[
-f(n, m, k) = g(n, m, k \times m)
-\]</span></p>
-<p><span class="math display">\[
-g(n, m, x) =
-\begin{cases}
-x &amp; , x \leq n \\
-g(n, m, \lfloor \dfrac{(x - 1 - n) \times m}{m - 1} \rfloor + 1) &amp;, x &gt; n
-\end{cases}
-\]</span></p>
-<p>代码实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &lt;= n ? x : <span class="built_in">g</span>(n, m, (x - <span class="number">1</span> - n) * m / (m - <span class="number">1</span>) + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">g</span>(n, m, k * m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意到该函数可以非递归实现，给出优化后的代码：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s = k * m - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (s &gt;= n) &#123;</span><br><span class="line">        s = (s - n) * m / (m - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Algorithm Contest</category>
-      </categories>
-      <tags>
-        <tag>Josephus problem</tag>
-        <tag>research</tag>
       </tags>
   </entry>
   <entry>
